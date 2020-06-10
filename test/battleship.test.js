@@ -1,6 +1,6 @@
-const ship = require('./Ship');
-const gameboard = require('./Gameboard');
-const player = require('./Player');
+const ship = require('../src/Ship');
+const gameboard = require('../src/Gameboard');
+const player = require('../src/Player');
 
 //////////////////SHIP/////////////////
 
@@ -160,10 +160,15 @@ test('Player can place ships', () => {
     const p1 = player();
     const gb = gameboard();
 
-    p1.
+    p1.placeShip(gb,0,0,1);
+    expect(gb.isFilled(0,0)).toBeTruthy();
 });
 
 test('Player can attack enemy board', () => {
-});
+    const p1 = player();
+    const gb = gameboard();
 
+    p1.makeMove(gb,0,0);
+    expect(gb.getMissedShots()).toStrictEqual([[0,0]]);
+});
 
