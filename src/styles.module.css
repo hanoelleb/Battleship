@@ -1,0 +1,49 @@
+/*
+ *
+ *  const board = document.createElement('div');
+    board.style.cssText = 'margin: 60px; display: flex; flex-wrap: wrap; width: 220px; height: 220px; background-color: mistyrose';
+
+    for (var i = 0; i < BOARD_SIZE; i++) {
+        for (var j = 0; j < BOARD_SIZE; j++) {
+            const square = document.createElement('div');
+            square.style.cssText = 'width: 20px; height: 20px; border: 1px solid black;';
+            board.appendChild(square);
+        }
+    }
+*/
+
+.Game {
+    background-color: seashell;
+    width: 1000px; 
+    display: flex;
+    justify-content: center;
+}
+
+.Square {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+}
+
+.Attacked {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    background-color: red; 
+}
+
+.Boat {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    background-color: black;
+}
+
+.Board {
+    margin: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 220px;
+    height: 220px;
+    background-color: mistyrose;
+}

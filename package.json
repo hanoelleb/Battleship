@@ -1,8 +1,6 @@
 {
   "name": "battleship",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest"
   },
@@ -10,8 +8,26 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^3.5.3",
     "jest": "^26.0.1",
+    "style-loader": "^1.2.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
-  }
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanoelleb/Battleship.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hanoelleb/Battleship/issues"
+  },
+  "homepage": "https://github.com/hanoelleb/Battleship#readme",
+  "description": ""
 }

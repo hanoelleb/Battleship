@@ -4,7 +4,7 @@ const ShipFactory = (id, length) => {
 	throw new Error('Invalid Length');
 
     var hits = [];
-    pos = [0,0];
+    var pos = [0,0];
 
     const hit = (pos) => {
 	//greater than/equal to size of ship or negative number not allowed
