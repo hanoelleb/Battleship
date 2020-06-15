@@ -14,10 +14,16 @@ class Square extends React.Component {
     }
 
     handleClick() {
+        if (this.props.board.getId() == 2 && this.props.turn == 1) {
 	alert('clicked ' + this.props.row + ' ' + this.props.col);
 	const hit = this.props.board.receiveAttack(this.props.row, this.props.col);
+
+	//if (this.props.board.areAllSunk()) {
+        //     alert('All ships sunk!');	
+	//}
         this.setState({isAttacked: true});
         this.props.handler();
+	}
     }
 
     handleBoat() {
@@ -32,8 +38,11 @@ class Square extends React.Component {
 	if (val != 0 && val < 50) {
 	    return e('div', {className: styles.Boat, onClick: this.handleClick });
 	} 
-        else if (val != 0) {
+        else if (val === 50) {
             return e('div', {className: styles.Attacked, onClick: this.handleClick });
+	}
+        else if (val === 80) { 
+            return e('div', {className: styles.Missed, onClick: this.handleClick });
 	}
         return e('div', {className: styles.Square, onClick: this.handleClick });
     }
@@ -41,11 +50,8 @@ class Square extends React.Component {
 
 class GameBoard extends React.Component {
 
-    //constructor(props) {
-    //     super(props);
-    //}
     renderSquare(i,j,val,board) {
-        return e(Square, {row: i, col: j, val: val, board: board, handler: this.props.handler}, null);
+        return e(Square, {row: i, col: j, val: val, board: board, handler: this.props.handler, turn: this.props.turn}, null);
     }
     
     render() {
@@ -59,7 +65,6 @@ class GameBoard extends React.Component {
                 board.push(square);
 	    }
 	}
-
         return e('div', {className: styles.Board}, board);
     }
 }
@@ -68,19 +73,29 @@ class Game extends React.Component {
     constructor(props) {
 	super(props);
         this.moveHandler = this.moveHandler.bind(this);
+	this.chooseMove = this.chooseMove.bind(this);
 	this.state = ({turn: 1});
     }
 
     moveHandler() {
-        if (this.state.turn == 1) {
-            this.setState({turn: 2});
-	} else {
-            this.setState({turn: 1});	
+        this.setState({turn: 2});
+	this.chooseMove();
+    }
+
+    chooseMove() {
+	const playerBoard = this.props.boards[0];
+	var row = Math.floor((Math.random() * 10));
+        var col = Math.floor((Math.random() * 10));
+
+	while(!playerBoard.receiveAttack(row, col)){
+             row = Math.floor((Math.random() * 10));
+             col = Math.floor((Math.random() * 10));
 	}
+        this.setState({turn: 1});
     }
 
     renderBoard(board) {
-        return e(GameBoard, {board: board, handler: this.moveHandler});
+        return e(GameBoard, {board: board, handler: this.moveHandler, turn: this.state.turn});
     }
 
     render() {

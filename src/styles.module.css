@@ -32,6 +32,13 @@
     background-color: red; 
 }
 
+.Missed {    
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    background-color: blue; 
+}
+
 .Boat {
     width: 20px;
     height: 20px;

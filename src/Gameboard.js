@@ -1,8 +1,12 @@
 const Ship = require('./Ship');
 
-const GameboardFactory = () => {
+const GameboardFactory = (id) => {
+
+    var id = id;
 
     const ATTACKED = 50;
+    const MISSED = 80;
+
     var ships = [
     ];
 
@@ -51,6 +55,10 @@ const GameboardFactory = () => {
  
     var missedShots = [];
 
+    const getId = () => {
+        return id;
+    }
+
     const place = (row, col, id) => {
         for (var i = 0; i < ships[id-1].length; i++) {
             //taken spot so return false as it can't be placed here.
@@ -59,7 +67,6 @@ const GameboardFactory = () => {
 	    }
 	}
 
-        //ships[id-1].setPos(row, col);
 	var ship = ships[id-1];
 	ship.setPos(row,col);
 
@@ -74,12 +81,11 @@ const GameboardFactory = () => {
     }
 
     //todo: implement receiveAttack(row,col), shipHits(id), getMissedShots()
-    
     const receiveAttack = (row,col) => {
         if (board[row][col] !== 0 && board[row][col] != ATTACKED) {
-            console.log('row: ' + row);
-            console.log('col: ' + col);
             const id = board[row][col];
+	    console.log(id);
+	    console.log(ships[id-1]);
             const pos = ships[id-1].getPos();
             //if horizontal
             const hitAt = Math.abs(pos[1] - col);
@@ -87,10 +93,8 @@ const GameboardFactory = () => {
             board[row][col] = ATTACKED;
 	    return true;
         } else if (board[row][col] === 0) { 
-            console.log('row: ' + row);
-            console.log('col: ' + col);
             missedShots.push([row,col]);
-            board[row][col] = ATTACKED;
+            board[row][col] = MISSED;
             return true;
 	}
         return false;
@@ -103,6 +107,7 @@ const GameboardFactory = () => {
     const getMissedShots = () => {return missedShots;}
 
     const areAllSunk = () => {
+        console.log(ships);
         for (var i = 0; i < ships.length; i++) {
             if (!ships[i].isSunk)
                 return false;
@@ -120,7 +125,7 @@ const GameboardFactory = () => {
             }
     }
 
-    return {place, isFilled, getBoard, getMissedShots, receiveAttack, shipHits, areAllSunk, getShipsPos};
+    return {place, isFilled, getId, getBoard, getMissedShots, receiveAttack, shipHits, areAllSunk, getShipsPos};
 }
 
 module.exports = GameboardFactory;
