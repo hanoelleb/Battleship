@@ -106,7 +106,7 @@ test('Will record missed shots', () => {
 
 test('Reports if all ships have sunk', () => {
     const gb = gameboard();
-
+    expect(gb.areAllSunk()).toBeFalsy();
     //one tile ships
     gb.place(0,0,1);
     gb.receiveAttack(0,0);
@@ -155,6 +155,7 @@ test('Reports if all ships have sunk', () => {
 });
 
 ////////////////PLAYER/////////////////////
+
 
 test('Player can place ships', () => {
     const p1 = player();

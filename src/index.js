@@ -1,4 +1,4 @@
-import {Game} from './DOM.js';
+import {Game, ShipCard} from './DOM.js';
 const player = require('./Player');
 const gameboard = require('./Gameboard');
 
@@ -19,6 +19,11 @@ function placeBoats(player, board){
     }
 }
 
+function initShipCard(ships) {
+     const container = document.getElementById('Card');
+     ReactDOM.render(e(ShipCard, {ships: ships}), container); 
+}
+
 function gameLoop() {
     const running = true;
     var turn = 1;
@@ -29,8 +34,11 @@ function gameLoop() {
     const gb1 = gameboard(1);
     const gb2 = gameboard(2);
 
-    placeBoats(p1, gb1);
+    //todo: implement system for user to place ships
+    //placeBoats(p1, gb1);
+    initShipCard(gb1.getShips());
     placeBoats(p2, gb2);
+
     const container = document.getElementById('Game');
     ReactDOM.render(e(Game, {boards: [gb1, gb2]}), container);
 }
