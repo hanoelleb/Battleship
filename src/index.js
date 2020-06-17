@@ -19,9 +19,9 @@ function placeBoats(player, board){
     }
 }
 
-function initShipCard(ships) {
+function initShipCard(ships, board) {
      const container = document.getElementById('Card');
-     ReactDOM.render(e(ShipCard, {ships: ships}), container); 
+     ReactDOM.render(e(ShipCard, {ships: ships, board: board}), container); 
 }
 
 function gameLoop() {
@@ -36,7 +36,7 @@ function gameLoop() {
 
     //todo: implement system for user to place ships
     //placeBoats(p1, gb1);
-    initShipCard(gb1.getShips());
+    //initShipCard(gb1.getShips(), gb1);
     placeBoats(p2, gb2);
 
     const container = document.getElementById('Game');

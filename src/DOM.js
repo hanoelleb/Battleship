@@ -5,6 +5,7 @@ import styles from './styles.module.css'
 'use strict'; 
 
 var successDrop = false;
+var gameRunning = false;
 
 const e = React.createElement;
 
@@ -20,19 +21,23 @@ class Square extends React.Component {
     }
 
     handleClick() {
-        if (this.props.board.getId() == 2 && this.props.turn == 1) {
-	alert('clicked ' + this.props.row + ' ' + this.props.col);
-	const hit = this.props.board.receiveAttack(this.props.row, this.props.col);
+	console.log('game running: ' + gameRunning);
+	if (gameRunning) {
+            if (this.props.board.getId() == 2 && this.props.turn == 1) {
+	    const hit = this.props.board.receiveAttack(this.props.row, this.props.col);
         
-	if (hit) {
-	    if (this.props.board.areAllSunk()) {
-                 alert('All ships sunk!');	
-	    }
+	    if (hit) {
+	            if (this.props.board.areAllSunk()) {
+                         alert('Congratulations! You sunk their battleships!');	
+	            }
 
-            this.setState({isAttacked: true});
-            this.props.handler();
-	    }
-        }
+                    this.setState({isAttacked: true});
+                    this.props.handler();
+	        }
+            }
+        } else {
+	    alert('Please place all your ships!');
+	}
     }
 
     handleEnter(event) {
@@ -140,6 +145,9 @@ class Game extends React.Component {
              row = Math.floor((Math.random() * 10));
              col = Math.floor((Math.random() * 10));
 	}
+	if (this.props.boards[0].areAllSunk()) {
+	    alert('Sorry! All your battleships have sunk!');
+	}
         this.setState({turn: 1});
     }
 
@@ -147,12 +155,19 @@ class Game extends React.Component {
         return e(GameBoard, {board: board, handler: this.moveHandler, placeHandler: this.placeHandler, turn: this.state.turn});
     }
 
+    renderShipCard(board) {
+        return e(ShipCard, {ships: board.getShips(), board: board, placeHandler: this.placeHandler});
+    }
+
     render() {
 	const gameboards = this.props.boards;
         const boards = [];
         boards.push(this.renderBoard(gameboards[0]));
         boards.push(this.renderBoard(gameboards[1]));
-	return e('div', {className: styles.Game}, boards);
+        const gameDiv = e('div', {className: styles.Game}, boards);
+
+	const shipcard = this.renderShipCard(gameboards[0]);
+	return e('div', null, gameDiv, shipcard);
     }
 }
 
@@ -204,6 +219,7 @@ class ShipCard extends React.Component {
     constructor(props) {
         super(props);
 	this.removeShip = this.removeShip.bind(this);
+	this.placeShipsRandom = this.placeShipsRandom.bind(this);
         this.state = ({placed: []});
     }
 
@@ -214,26 +230,43 @@ class ShipCard extends React.Component {
     removeShip(id) {
 	console.log('here');
 	const ships = this.props.ships;
-	//console.log(ships);
-        //for (var i = 0; i < ships.length; i++) {
-	//    if (ships[i].id === id)
-	//	ships.splice(i,1);
-	//}
         const ids = this.state.placed;
 	ids.push(id);
 	console.log('ids: ' + ids);
 	this.setState({placed: ids});
     }
 
+    placeShipsRandom() {
+        var row = Math.floor((Math.random() * 10));
+	var col = Math.floor((Math.random() * 10));
+	const ids = this.state.placed;
+        for (var i = 1; i <= 10; i++) {
+            if (ids.indexOf(i) === -1) {
+                while ( !(this.props.board.place(row, col, i)) ){
+                    row = Math.floor((Math.random() * 10));
+                    col = Math.floor((Math.random() * 10));
+                }
+                ids.push(i);
+	    }
+        }
+	this.setState({placed: ids});
+	this.props.placeHandler();
+    }
+
     render() {
 	const ships = this.props.ships.slice();
-	
-	var shipGrid = [];
-	for (var i = 0; i < ships.length; i++){
-	    if (this.state.placed.indexOf(i+1) === -1)
-	        shipGrid.push(this.renderShip(ships[i]));    
+        if (this.state.placed.length !== 10) {
+            gameRunning = false;
+            var shipGrid = []	
+	    for (var i = 0; i < ships.length; i++){
+	        if (this.state.placed.indexOf(i+1) === -1)
+	            shipGrid.push(this.renderShip(ships[i]));    
+	    } 
+	    var randomPlace = e('button', {onClick: this.placeShipsRandom}, 'Randomize');
+	} else {
+            gameRunning = true;
 	}
-        return e('div', {className: styles.ShipCard},  shipGrid);
+        return e('div', {className: styles.ShipCard}, shipGrid, randomPlace);
     }
 }
 
