@@ -4,6 +4,14 @@ const gameboard = require('./Gameboard');
 
 const e = React.createElement;
 
+
+const restart = document.getElementById('restart');
+restart.addEventListener('click', () => {
+    const container = document.getElementById('Game');
+    ReactDOM.unmountComponentAtNode(container);
+    gameLoop();
+});
+
 function initGame() {
     renderGame();
 }
@@ -25,7 +33,7 @@ function initShipCard(ships, board) {
 }
 
 function gameLoop() {
-    const running = true;
+    console.log('here');
     var turn = 1;
 
     const p1 = player(1);
@@ -34,13 +42,11 @@ function gameLoop() {
     const gb1 = gameboard(1);
     const gb2 = gameboard(2);
 
-    //todo: implement system for user to place ships
-    //placeBoats(p1, gb1);
-    //initShipCard(gb1.getShips(), gb1);
     placeBoats(p2, gb2);
 
     const container = document.getElementById('Game');
     ReactDOM.render(e(Game, {boards: [gb1, gb2]}), container);
+    console.log('after');
 }
 
 gameLoop();

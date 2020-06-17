@@ -266,13 +266,8 @@ class ShipCard extends React.Component {
 	} else {
             gameRunning = true;
 	}
-        return e('div', {className: styles.ShipCard}, shipGrid, randomPlace);
+        return e('div', {id: 'ShipCard', className: styles.ShipCard}, shipGrid, randomPlace);
     }
-}
-
-function renderGame(boards) {
-    const container = document.getElementById('Game');
-    ReactDOM.render(e(Game, {boards: boards, handler: this.moveHandler}), container);
 }
 
 export {Game, ShipCard};
